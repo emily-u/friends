@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Hello, {{ user.alias }}!</h2>
+    <form action="/logout" method="POST">
+        {% csrf_token %}
+        <button>Log out</button>
+    </form>
+    <div>
+        <h3>Here is the list of your friends:</h3>
+        <table>
+            <tr>
+                <th>Alias</th>
+                <th>Action</th>
+            </tr>
+            {% if buddy %}
+            {% for i in buddy %}
+            <tr>
+                <td>{{ i.alias }}</td>
+                    {% endfor %}
+                    {% endif %}
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h3>Other Users not on your friend's list:</h3>
+        <table>
+            <tr>
+                <th>Alias</th>
+                <th>Action</th>
+            </tr>
+            {% if allusers %}
+            {% for i in allusers %}
+            <tr>
+                <td><a href="/users/{{ i.id }}">{{ i.alias }}</a></td>
+                <td>
+                    <form action="/add" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="friend_id" value="{{friends.id}}">  
+                    <input type="hidden" name="user_id" value="{{user.id}}">  
+                    <button>Add as Friend</button>
+                    </form>
+                </td>
+                    {% endfor %}
+                    {% endif %}
+            </tr>
+        </table>
+    
+    
+    </div>
+    
+</body>
+</html>
